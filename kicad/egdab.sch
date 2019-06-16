@@ -1,0 +1,128 @@
+EESchema Schematic File Version 4
+EELAYER 29 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L MCU_Microchip_ATmega:ATmega328P-AU U?
+U 1 1 5D0758F5
+P 2700 3350
+F 0 "U?" H 2700 1761 50  0000 C CNN
+F 1 "ATmega328P-AU" H 2700 1670 50  0000 C CNN
+F 2 "Package_QFP:TQFP-32_7x7mm_P0.8mm" H 2700 3350 50  0001 C CIN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328_P%20AVR%20MCU%20with%20picoPower%20Technology%20Data%20Sheet%2040001984A.pdf" H 2700 3350 50  0001 C CNN
+	1    2700 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx_IEEE:74165 U?
+U 1 1 5D075FAE
+P 4900 1700
+F 0 "U?" H 4900 2466 50  0000 C CNN
+F 1 "74165" H 4900 2375 50  0000 C CNN
+F 2 "" H 4900 1700 50  0001 C CNN
+F 3 "" H 4900 1700 50  0001 C CNN
+	1    4900 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED_CRGB D?
+U 1 1 5D076CBA
+P 7450 1600
+F 0 "D?" H 7450 2097 50  0000 C CNN
+F 1 "LED_CRGB" H 7450 2006 50  0000 C CNN
+F 2 "" H 7450 1550 50  0001 C CNN
+F 3 "~" H 7450 1550 50  0001 C CNN
+	1    7450 1600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED_CRGB D?
+U 1 1 5D0789D7
+P 8400 1600
+F 0 "D?" H 8400 2097 50  0000 C CNN
+F 1 "LED_CRGB" H 8400 2006 50  0000 C CNN
+F 2 "" H 8400 1550 50  0001 C CNN
+F 3 "~" H 8400 1550 50  0001 C CNN
+	1    8400 1600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED_CRGB D?
+U 1 1 5D0794C1
+P 9400 1550
+F 0 "D?" H 9400 2047 50  0000 C CNN
+F 1 "LED_CRGB" H 9400 1956 50  0000 C CNN
+F 2 "" H 9400 1500 50  0001 C CNN
+F 3 "~" H 9400 1500 50  0001 C CNN
+	1    9400 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Display_Character:MAN71A U?
+U 1 1 5D079D8F
+P 7550 2800
+F 0 "U?" H 7550 3467 50  0000 C CNN
+F 1 "MAN71A" H 7550 3376 50  0000 C CNN
+F 2 "Display_7Segment:MAN71A" H 7050 2100 50  0001 L CNN
+F 3 "https://www.digchip.com/datasheets/parts/datasheet/161/MAN3640A-pdf.php" H 7560 3140 50  0001 L CNN
+	1    7550 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 5D07AA87
+P 7400 4200
+F 0 "SW?" H 7400 4485 50  0000 C CNN
+F 1 "SW_Push" H 7400 4394 50  0000 C CNN
+F 2 "" H 7400 4400 50  0001 C CNN
+F 3 "~" H 7400 4400 50  0001 C CNN
+	1    7400 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 5D07B855
+P 8200 4200
+F 0 "SW?" H 8200 4485 50  0000 C CNN
+F 1 "SW_Push" H 8200 4394 50  0000 C CNN
+F 2 "" H 8200 4400 50  0001 C CNN
+F 3 "~" H 8200 4400 50  0001 C CNN
+	1    8200 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW?
+U 1 1 5D07BCD2
+P 9000 4200
+F 0 "SW?" H 9000 4485 50  0000 C CNN
+F 1 "SW_Push" H 9000 4394 50  0000 C CNN
+F 2 "" H 9000 4400 50  0001 C CNN
+F 3 "~" H 9000 4400 50  0001 C CNN
+	1    9000 4200
+	1    0    0    -1  
+$EndComp
+Text GLabel 7550 4900 0    50   Input ~ 0
+touch
+$Comp
+L Device:Microphone MK?
+U 1 1 5D07D20C
+P 7350 5550
+F 0 "MK?" H 7480 5596 50  0000 L CNN
+F 1 "Microphone" H 7480 5505 50  0000 L CNN
+F 2 "" V 7350 5650 50  0001 C CNN
+F 3 "~" V 7350 5650 50  0001 C CNN
+	1    7350 5550
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
