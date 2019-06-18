@@ -17,12 +17,12 @@ $EndDescr
 $Comp
 L MCU_Microchip_ATmega:ATmega328P-AU U?
 U 1 1 5D0758F5
-P 2700 3350
-F 0 "U?" H 2700 1761 50  0000 C CNN
-F 1 "ATmega328P-AU" H 2700 1670 50  0000 C CNN
-F 2 "Package_QFP:TQFP-32_7x7mm_P0.8mm" H 2700 3350 50  0001 C CIN
-F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328_P%20AVR%20MCU%20with%20picoPower%20Technology%20Data%20Sheet%2040001984A.pdf" H 2700 3350 50  0001 C CNN
-	1    2700 3350
+P 1600 2400
+F 0 "U?" H 1600 811 50  0000 C CNN
+F 1 "ATmega328P-AU" H 1600 720 50  0000 C CNN
+F 2 "Package_QFP:TQFP-32_7x7mm_P0.8mm" H 1600 2400 50  0001 C CIN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328_P%20AVR%20MCU%20with%20picoPower%20Technology%20Data%20Sheet%2040001984A.pdf" H 1600 2400 50  0001 C CNN
+	1    1600 2400
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1177,7 +1177,7 @@ Connection ~ 14750 1150
 Wire Wire Line
 	14750 1150 14850 1150
 Text Notes 5750 2400 0    138  ~ 0
-TODO\n\n- power conditioning capacitors\n- touch capacitance capacitors (?)\n- MAX7221 data connection\n- DAC data connection\n- header: spi, programmer, i2c?, dac, sensor
+TODO\n\n- power conditioning capacitors\n- MAX7221 data connection\n- DAC data connection\n- header: spi, programmer, i2c?, dac, sensor
 $Comp
 L Device:R_POT RV?
 U 1 1 5DD97FA9
@@ -1278,4 +1278,69 @@ F 3 "~" H 5200 6450 50  0001 C CNN
 	1    5200 6450
 	1    0    0    -1  
 $EndComp
+Text GLabel 6350 4650 0    50   Input ~ 0
+MULT_E
+Text GLabel 6350 4850 0    50   Input ~ 0
+MULT_1
+Text GLabel 6350 5050 0    50   Input ~ 0
+MULT_2
+Text GLabel 6350 5250 0    50   Input ~ 0
+MULT_3
+Text GLabel 6350 5450 0    50   Input ~ 0
+MULT_4
+Text GLabel 3750 2950 2    50   Input ~ 0
+MULT_E
+Text GLabel 2800 2100 2    50   Input ~ 0
+MULT_1
+Text GLabel 2800 2200 2    50   Input ~ 0
+MULT_2
+Text GLabel 2800 2300 2    50   Input ~ 0
+MULT_3
+Text GLabel 2800 2400 2    50   Input ~ 0
+MULT_4
+Wire Wire Line
+	2800 2100 2200 2100
+Wire Wire Line
+	2200 2200 2800 2200
+Wire Wire Line
+	2800 2300 2200 2300
+Wire Wire Line
+	2200 2400 2800 2400
+Text GLabel 3250 3500 2    50   Input ~ 0
+INPUT_SR_SH
+Text GLabel 3250 3750 2    50   Input ~ 0
+INPUT_SR_CLK
+Text GLabel 3250 4000 2    50   Input ~ 0
+INPUT_SR
+Text GLabel 3850 10600 0    50   Input ~ 0
+DAC_DI
+Text GLabel 3850 10800 0    50   Input ~ 0
+DAC_LD
+Text GLabel 3850 10700 0    50   Input ~ 0
+DAC_CLK
+Wire Wire Line
+	3850 10600 4200 10600
+Wire Wire Line
+	4200 10700 3850 10700
+Wire Wire Line
+	3850 10800 4200 10800
+Text GLabel 3300 4450 2    50   Input ~ 0
+DAC_DI
+Text GLabel 3300 4650 2    50   Input ~ 0
+DAC_LD
+Text GLabel 3300 4550 2    50   Input ~ 0
+DAC_CLK
+$Comp
+L Interface_Expansion:AS1115-BSST U?
+U 1 1 5D451D3E
+P -3500 6150
+F 0 "U?" H -3500 7531 50  0000 C CNN
+F 1 "AS1115-BSST" H -3500 7440 50  0000 C CNN
+F 2 "Package_SO:QSOP-24_3.9x8.7mm_P0.635mm" H -3500 6150 50  0001 C CNN
+F 3 "https://ams.com/documents/20143/36005/AS1115_DS000206_1-00.pdf/3d3e6d35-b184-1329-adf9-2d769eb2404f" H -3500 6150 50  0001 C CNN
+	1    -3500 6150
+	1    0    0    -1  
+$EndComp
+Text Notes -4150 4150 0    50   ~ 0
+TODO\n\nReplace MAX7221 and 2x shift registers with AS1115
 $EndSCHEMATC
