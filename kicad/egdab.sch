@@ -14,17 +14,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L Device:Battery_Cell BT1
-U 1 1 5D073589
-P 850 10200
-F 0 "BT1" H 968 10296 50  0000 L CNN
-F 1 "CR2450VP" H 968 10205 50  0000 L CNN
-F 2 "Battery_Holders:Keystone_3008_1x2450-CoinCell" V 850 10260 50  0001 C CNN
-F 3 "~" V 850 10260 50  0001 C CNN
-	1    850  10200
-	-1   0    0    -1  
-$EndComp
 Wire Wire Line
 	1850 2600 1850 3050
 Wire Wire Line
@@ -346,11 +335,7 @@ Connection ~ 12550 5800
 Connection ~ 12600 5700
 Wire Wire Line
 	12600 5700 14400 5700
-Wire Wire Line
-	4250 6700 15600 6700
 Connection ~ 15600 9450
-Wire Wire Line
-	4250 6800 13800 6800
 Connection ~ 13800 9450
 Wire Wire Line
 	3650 7900 3650 8450
@@ -429,12 +414,6 @@ F 3 "~" H 11500 8150 50  0001 C CNN
 	1    11500 8200
 	0    -1   1    0   
 $EndComp
-Wire Wire Line
-	9900 6900 4250 6900
-Wire Wire Line
-	9800 7000 4250 7000
-Wire Wire Line
-	4250 7100 9700 7100
 Wire Wire Line
 	4250 7200 9600 7200
 Wire Wire Line
@@ -1076,46 +1055,9 @@ Wire Wire Line
 	2450 4450 3050 4450
 Connection ~ 2700 4150
 Connection ~ 2650 4250
-$Comp
-L Device:C C2
-U 1 1 5F12EBF6
-P 1600 10150
-F 0 "C2" H 1715 10196 50  0000 L CNN
-F 1 "22uF" H 1715 10105 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 1638 10000 50  0001 C CNN
-F 3 "~" H 1600 10150 50  0001 C CNN
-	1    1600 10150
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C C3
-U 1 1 5F12F59C
-P 2000 10150
-F 0 "C3" H 2115 10196 50  0000 L CNN
-F 1 "22uF" H 2115 10105 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2038 10000 50  0001 C CNN
-F 3 "~" H 2000 10150 50  0001 C CNN
-	1    2000 10150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	850  10300 850  10500
-Wire Wire Line
-	2000 10500 2000 10300
-Wire Wire Line
-	1600 10300 1600 10500
 Connection ~ 1600 10500
 Wire Wire Line
 	1600 10500 2000 10500
-Wire Wire Line
-	850  10000 850  9800
-Wire Wire Line
-	2000 9800 2000 10000
-Wire Wire Line
-	1600 10000 1600 9800
-Connection ~ 1600 9800
-Wire Wire Line
-	1600 9800 2000 9800
 $Comp
 L power:GND #PWR0104
 U 1 1 5F29284A
@@ -1128,10 +1070,7 @@ F 3 "" H 850 10750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	850  9250 850  9150
-Wire Wire Line
 	850  10750 850  10500
-Connection ~ 850  10500
 Text GLabel 13050 4150 2    50   Input ~ 0
 I2C_SCL
 Text GLabel 13050 4250 2    50   Input ~ 0
@@ -1274,17 +1213,6 @@ F 3 "" H 15150 2350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+3V0 #PWR0109
-U 1 1 5FFFC9C6
-P 850 9150
-F 0 "#PWR0109" H 850 9000 50  0001 C CNN
-F 1 "+3V0" H 865 9323 50  0000 C CNN
-F 2 "" H 850 9150 50  0001 C CNN
-F 3 "" H 850 9150 50  0001 C CNN
-	1    850  9150
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:+3V0 #PWR0110
 U 1 1 5FFFD122
 P 1850 2600
@@ -1368,88 +1296,14 @@ Wire Wire Line
 	14000 1300 14150 1300
 Wire Wire Line
 	850  10500 1200 10500
-Wire Wire Line
-	850  9800 1200 9800
-$Comp
-L Device:C C1
-U 1 1 609E4A74
-P 1200 10150
-F 0 "C1" H 1315 10196 50  0000 L CNN
-F 1 "22uF" H 1315 10105 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 1238 10000 50  0001 C CNN
-F 3 "~" H 1200 10150 50  0001 C CNN
-	1    1200 10150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1200 10300 1200 10500
-Wire Wire Line
-	1200 10000 1200 9800
-Connection ~ 1200 9800
-Wire Wire Line
-	1200 9800 1600 9800
 Connection ~ 1200 10500
 Wire Wire Line
 	1200 10500 1600 10500
-$Comp
-L Device:C C5
-U 1 1 60A92DB1
-P 2800 10150
-F 0 "C5" H 2915 10196 50  0000 L CNN
-F 1 "22uF" H 2915 10105 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2838 10000 50  0001 C CNN
-F 3 "~" H 2800 10150 50  0001 C CNN
-	1    2800 10150
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C C6
-U 1 1 60A92DB7
-P 3200 10150
-F 0 "C6" H 3315 10196 50  0000 L CNN
-F 1 "22uF" H 3315 10105 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 3238 10000 50  0001 C CNN
-F 3 "~" H 3200 10150 50  0001 C CNN
-	1    3200 10150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3200 10500 3200 10300
-Wire Wire Line
-	2800 10300 2800 10500
 Connection ~ 2800 10500
 Wire Wire Line
 	2800 10500 3200 10500
 Wire Wire Line
-	3200 9800 3200 10000
-Wire Wire Line
-	2800 10000 2800 9800
-Connection ~ 2800 9800
-Wire Wire Line
-	2800 9800 3200 9800
-$Comp
-L Device:C C4
-U 1 1 60A92DC7
-P 2400 10150
-F 0 "C4" H 2515 10196 50  0000 L CNN
-F 1 "22uF" H 2515 10105 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2438 10000 50  0001 C CNN
-F 3 "~" H 2400 10150 50  0001 C CNN
-	1    2400 10150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2400 10300 2400 10500
-Wire Wire Line
-	2400 10000 2400 9800
-Wire Wire Line
-	2400 9800 2800 9800
-Wire Wire Line
 	2400 10500 2800 10500
-Wire Wire Line
-	2000 9800 2400 9800
-Connection ~ 2000 9800
-Connection ~ 2400 9800
 Wire Wire Line
 	2400 10500 2000 10500
 Connection ~ 2400 10500
@@ -1550,44 +1404,9 @@ Wire Wire Line
 	2450 4650 10150 4650
 Wire Wire Line
 	10150 1500 10150 4650
-$Comp
-L Device:C C7
-U 1 1 629FBF07
-P 3600 10150
-F 0 "C7" H 3715 10196 50  0000 L CNN
-F 1 "22uF" H 3715 10105 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 3638 10000 50  0001 C CNN
-F 3 "~" H 3600 10150 50  0001 C CNN
-	1    3600 10150
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:C C8
-U 1 1 629FBF0D
-P 4000 10150
-F 0 "C8" H 4115 10196 50  0000 L CNN
-F 1 "22uF" H 4115 10105 50  0000 L CNN
-F 2 "Capacitors_SMD:C_0603_HandSoldering" H 4038 10000 50  0001 C CNN
-F 3 "~" H 4000 10150 50  0001 C CNN
-	1    4000 10150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4000 10500 4000 10300
-Wire Wire Line
-	3600 10300 3600 10500
 Connection ~ 3600 10500
 Wire Wire Line
 	3600 10500 4000 10500
-Wire Wire Line
-	4000 9800 4000 10000
-Wire Wire Line
-	3600 10000 3600 9800
-Connection ~ 3600 9800
-Wire Wire Line
-	3600 9800 4000 9800
-Wire Wire Line
-	3200 9800 3600 9800
 Wire Wire Line
 	3200 10500 3600 10500
 Wire Wire Line
@@ -2056,20 +1875,6 @@ Connection ~ 10300 9650
 Wire Wire Line
 	10300 9650 10950 9650
 $Comp
-L Switch:SW_SPST SW6
-U 1 1 5D501008
-P 850 9450
-F 0 "SW6" V 804 9548 50  0000 L CNN
-F 1 "SW_SPST" V 895 9548 50  0000 L CNN
-F 2 "" H 850 9450 50  0001 C CNN
-F 3 "~" H 850 9450 50  0001 C CNN
-	1    850  9450
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	850  9650 850  9800
-Connection ~ 850  9800
-$Comp
 L Device:R R5
 U 1 1 60E35EE1
 P 8200 3050
@@ -2100,4 +1905,234 @@ Wire Wire Line
 Connection ~ 8950 3300
 Connection ~ 8550 3300
 Connection ~ 9150 3300
+Wire Wire Line
+	5750 6700 5750 7000
+Wire Wire Line
+	5950 7100 5950 6650
+Wire Wire Line
+	5950 6650 5700 6650
+Wire Wire Line
+	5950 7100 9700 7100
+Wire Wire Line
+	6050 7000 6050 6600
+Wire Wire Line
+	6050 6600 5600 6600
+Wire Wire Line
+	6050 7000 9800 7000
+Wire Wire Line
+	5850 6800 5850 7100
+Wire Wire Line
+	5750 7000 4250 7000
+Wire Wire Line
+	4250 7100 5850 7100
+Wire Wire Line
+	5700 6900 4250 6900
+Wire Wire Line
+	5850 6800 13800 6800
+Wire Wire Line
+	5750 6700 15600 6700
+Wire Wire Line
+	6150 6900 6150 6550
+Wire Wire Line
+	6150 6550 5500 6550
+Wire Wire Line
+	6150 6900 9900 6900
+Wire Wire Line
+	5700 6650 5700 6900
+Wire Wire Line
+	5500 6700 4250 6700
+Wire Wire Line
+	5500 6550 5500 6700
+Wire Wire Line
+	4250 6800 5600 6800
+Wire Wire Line
+	5600 6600 5600 6800
+Connection ~ 3200 9400
+Wire Wire Line
+	3200 9400 3600 9400
+Wire Wire Line
+	3600 9400 4000 9400
+Connection ~ 3600 9400
+Connection ~ 2400 9400
+Connection ~ 2000 9400
+Wire Wire Line
+	2000 9400 2400 9400
+Wire Wire Line
+	2400 9400 2800 9400
+Wire Wire Line
+	2800 9400 3200 9400
+Connection ~ 2800 9400
+Wire Wire Line
+	1200 9400 1600 9400
+Connection ~ 1200 9400
+Wire Wire Line
+	850  9400 1200 9400
+$Comp
+L power:+3V0 #PWR0109
+U 1 1 5FFFC9C6
+P 850 9150
+F 0 "#PWR0109" H 850 9000 50  0001 C CNN
+F 1 "+3V0" H 865 9323 50  0000 C CNN
+F 2 "" H 850 9150 50  0001 C CNN
+F 3 "" H 850 9150 50  0001 C CNN
+	1    850  9150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1600 9400 2000 9400
+Connection ~ 1600 9400
+Wire Wire Line
+	850  9400 850  9150
+Connection ~ 850  10500
+Wire Wire Line
+	1200 9400 1200 10000
+Wire Wire Line
+	1600 9400 1600 10000
+Wire Wire Line
+	2000 9400 2000 10000
+Wire Wire Line
+	2400 9400 2400 10000
+Wire Wire Line
+	2800 9400 2800 10000
+Wire Wire Line
+	3200 9400 3200 10000
+Wire Wire Line
+	3600 9400 3600 10000
+Wire Wire Line
+	4000 9400 4000 10000
+Wire Wire Line
+	3600 10300 3600 10500
+Wire Wire Line
+	4000 10500 4000 10300
+$Comp
+L Device:C C8
+U 1 1 629FBF0D
+P 4000 10150
+F 0 "C8" H 4115 10196 50  0000 L CNN
+F 1 "22uF" H 4115 10105 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 4038 10000 50  0001 C CNN
+F 3 "~" H 4000 10150 50  0001 C CNN
+	1    4000 10150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C7
+U 1 1 629FBF07
+P 3600 10150
+F 0 "C7" H 3715 10196 50  0000 L CNN
+F 1 "22uF" H 3715 10105 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 3638 10000 50  0001 C CNN
+F 3 "~" H 3600 10150 50  0001 C CNN
+	1    3600 10150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2400 10300 2400 10500
+$Comp
+L Device:C C4
+U 1 1 60A92DC7
+P 2400 10150
+F 0 "C4" H 2515 10196 50  0000 L CNN
+F 1 "22uF" H 2515 10105 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2438 10000 50  0001 C CNN
+F 3 "~" H 2400 10150 50  0001 C CNN
+	1    2400 10150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2800 10300 2800 10500
+Wire Wire Line
+	3200 10500 3200 10300
+$Comp
+L Device:C C6
+U 1 1 60A92DB7
+P 3200 10150
+F 0 "C6" H 3315 10196 50  0000 L CNN
+F 1 "22uF" H 3315 10105 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 3238 10000 50  0001 C CNN
+F 3 "~" H 3200 10150 50  0001 C CNN
+	1    3200 10150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C5
+U 1 1 60A92DB1
+P 2800 10150
+F 0 "C5" H 2915 10196 50  0000 L CNN
+F 1 "22uF" H 2915 10105 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2838 10000 50  0001 C CNN
+F 3 "~" H 2800 10150 50  0001 C CNN
+	1    2800 10150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1200 10300 1200 10500
+$Comp
+L Device:C C1
+U 1 1 609E4A74
+P 1200 10150
+F 0 "C1" H 1315 10196 50  0000 L CNN
+F 1 "22uF" H 1315 10105 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 1238 10000 50  0001 C CNN
+F 3 "~" H 1200 10150 50  0001 C CNN
+	1    1200 10150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1600 10300 1600 10500
+Wire Wire Line
+	2000 10500 2000 10300
+Wire Wire Line
+	850  10300 850  10500
+$Comp
+L Device:C C3
+U 1 1 5F12F59C
+P 2000 10150
+F 0 "C3" H 2115 10196 50  0000 L CNN
+F 1 "22uF" H 2115 10105 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 2038 10000 50  0001 C CNN
+F 3 "~" H 2000 10150 50  0001 C CNN
+	1    2000 10150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C2
+U 1 1 5F12EBF6
+P 1600 10150
+F 0 "C2" H 1715 10196 50  0000 L CNN
+F 1 "22uF" H 1715 10105 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603_HandSoldering" H 1638 10000 50  0001 C CNN
+F 3 "~" H 1600 10150 50  0001 C CNN
+	1    1600 10150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Battery_Cell BT1
+U 1 1 5D073589
+P 850 10200
+F 0 "BT1" H 968 10296 50  0000 L CNN
+F 1 "CR2450VP" H 968 10205 50  0000 L CNN
+F 2 "Battery_Holders:Keystone_3008_1x2450-CoinCell" V 850 10260 50  0001 C CNN
+F 3 "~" V 850 10260 50  0001 C CNN
+	1    850  10200
+	-1   0    0    -1  
+$EndComp
+Connection ~ 850  9400
+$Comp
+L Switch:SW_SPST SW6
+U 1 1 5D501008
+P 850 9750
+F 0 "SW6" V 804 9848 50  0000 L CNN
+F 1 "SW_SPST" V 895 9848 50  0000 L CNN
+F 2 "Digikey:Switch_Slide_JS202011SCQN" H 850 9750 50  0001 C CNN
+F 3 "~" H 850 9750 50  0001 C CNN
+	1    850  9750
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	850  9950 850  10000
+Wire Wire Line
+	850  9550 850  9400
+Text Label 850  10000 0    50   ~ 0
+BAT+
 $EndSCHEMATC
