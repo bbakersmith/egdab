@@ -1342,7 +1342,7 @@ U 1 1 62486167
 P 9150 950
 F 0 "MK1" H 9280 996 50  0000 L CNN
 F 1 "Microphone" H 9280 905 50  0000 L CNN
-F 2 "" V 9150 1050 50  0001 C CNN
+F 2 "BBS Components:spv1840l45h-b" V 9150 1050 50  0001 C CNN
 F 3 "~" V 9150 1050 50  0001 C CNN
 	1    9150 950 
 	1    0    0    1   
@@ -1384,21 +1384,6 @@ F 2 "Resistors_SMD:R_0603_HandSoldering" V 7780 2450 50  0001 C CNN
 F 3 "~" H 7850 2450 50  0001 C CNN
 	1    7850 2450
 	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	7750 3300 7850 3300
-Wire Wire Line
-	7750 1150 7750 3300
-$Comp
-L Connector:AudioJack2 J1
-U 1 1 5F657110
-P 7850 950
-F 0 "J1" V 7836 1138 50  0000 L CNN
-F 1 "AudioJack2" V 7927 1138 50  0000 L CNN
-F 2 "" H 7850 950 50  0001 C CNN
-F 3 "~" H 7850 950 50  0001 C CNN
-	1    7850 950 
-	0    -1   1    0   
 $EndComp
 Wire Wire Line
 	2450 4650 10150 4650
@@ -2135,4 +2120,19 @@ Wire Wire Line
 	850  9550 850  9400
 Text Label 850  10000 0    50   ~ 0
 BAT+
+$Comp
+L synthrotek2:Audio-Jack-2_Switch J1
+U 1 1 5D7366F8
+P 7750 950
+F 0 "J1" V 7682 1138 50  0000 L CNN
+F 1 "Audio-Jack-2_Switch" V 7773 1138 50  0000 L CNN
+F 2 "BBS Components:sj2-35852b-smt" H 8000 1050 50  0001 C CNN
+F 3 "~" H 8000 1050 50  0001 C CNN
+	1    7750 950 
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	7650 750  7650 3300
+Wire Wire Line
+	7650 3300 7850 3300
 $EndSCHEMATC
