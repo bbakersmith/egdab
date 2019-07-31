@@ -14,4 +14,4 @@ clean:
 	rm build/* 2>/dev/null || true
 
 flash: build/main.hex
-	sudo avrdude -vvv -c jtagmkII -p $(MMCU) -U flash:w:$<
+	sudo avrdude -vvv -c atmelice_updi -p $(MMCU) -U flash:w:$<
