@@ -27,15 +27,22 @@
 #define CAP1296_ADDR 0x50
 
 void egdab_twi_write(uint8_t address, uint8_t data[], uint8_t len) {
-	// Wait until TWI0.MSTATUS.BUSSTATE[1:0] is IDLE (01)
-//	while((TWI0.MSTATUS & 3) != 1) {}
+// TODO
+// - load the data in buffer
+// - write the address to MADDR
+// - wait til write interrupt
+// - write data to MDATA
+// - wait til write interrupt
+// - write data to MDATA
+// - when buffer empty, write STOP cmd to MCTRLB
+
 	TWI0.MADDR = address;
 	for(uint8_t i = 0; i < len; i++) {
 		// Wait until CLKHOLD cleared
-		while(TWI0.MSTATUS & (1 << 5)) {}
+		while(!(TWI0.MSTATUS & (1 << 6))) {}
 		TWI0.MDATA = data[i];
 	}
-	while(TWI0.MSTATUS & (1 << 5)) {}
+	while(!(TWI0.MSTATUS & (1 << 6))) {}
 	TWI0.MCTRLB |= 3; // STOP command
 }
 
@@ -65,19 +72,79 @@ int main(void) {
 	PORTB.DIRSET |= (1 << PIN2) | (1 << PIN3);
 	PORTB.OUTCLR |= (1 << PIN2) | (1 << PIN3);
 	
-	_delay_ms(100);
+	_delay_ms(500);
 	
 	uint8_t debug_data[1] = {
 		123
 	};
-	egdab_twi_write(CAP1296_ADDR, debug_data, 1);
+//	egdab_twi_write(CAP1296_ADDR, debug_data, 1);
 		
-	// Normal operation mode (shutdown)
-	uint8_t data[2] = {
-		0,
-		1
-	};
-//	egdab_twi_write(AS1115_ADDR, data, 2);
+//	_delay_ms(500);
+		
+	uint8_t data[2];
+	
+	// shutdown mode, normal with defaults
+	data[0] = 0x0C;
+	data[1] = 0x01;
+	egdab_twi_write(AS1115_ADDR, data, 2);
+
+	// global intensity
+	_delay_ms(2);
+	data[0] = 0x0A;
+	data[1] = 0x0F;
+	egdab_twi_write(AS1115_ADDR, data, 2);
+	
+	// decode mode
+	_delay_ms(2);
+	data[0] = 0x09;
+	data[1] = 0x00;
+	egdab_twi_write(AS1115_ADDR, data, 2);
+	
+	// set led intensity and value
+	_delay_ms(2);
+	data[0] = 0x10;
+	data[1] = 0xFF;
+	egdab_twi_write(AS1115_ADDR, data, 2);
+	
+	_delay_ms(2);
+	data[0] = 0x01;
+	data[1] = 0xFF;
+	egdab_twi_write(AS1115_ADDR, data, 2);	
+
+	_delay_ms(2);
+	data[0] = 0x02;
+	data[1] = 0xFF;
+	egdab_twi_write(AS1115_ADDR, data, 2);
+	
+	// set 7-seg chars intensity
+	_delay_ms(2);
+	data[0] = 0x11;
+	data[1] = 0xFF;
+	egdab_twi_write(AS1115_ADDR, data, 2);
+		
+	_delay_ms(2);
+	data[0] = 0x12;
+	data[1] = 0xFF;
+	egdab_twi_write(AS1115_ADDR, data, 2);
+	
+	// set 7-seg chars value
+	_delay_ms(2);
+	data[0] = 0x04;
+	data[1] = 0xFF;
+	egdab_twi_write(AS1115_ADDR, data, 2);
+	
+	_delay_ms(2);
+	data[0] = 0x05;
+	data[1] = 0xFF;
+	egdab_twi_write(AS1115_ADDR, data, 2);
+	
+	_delay_ms(5000);
+	
+	// display test
+	_delay_ms(2);
+	data[0] = 0x0F;
+	data[1] = 0x01;
+	egdab_twi_write(AS1115_ADDR, data, 2);
 	
 	while(true) {
 		// Do test
@@ -106,10 +173,4 @@ int main(void) {
 	}
 
 	return 0;
-}
-
-ISR(TWI0_TWIM_vect) {
-	if(TWI0.MSTATUS & TWI_WIF) {
-		
-	}	
 }
