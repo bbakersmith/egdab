@@ -11,7 +11,7 @@
 #include <stdint.h>
 
 /**
- * The contents and metadata of a circular FIFO queue with 255 values.
+ * The metadata of a circular FIFO queue with up to 255 max values.
  */
 typedef volatile struct QueueFifo {
   uint8_t count;
@@ -20,8 +20,7 @@ typedef volatile struct QueueFifo {
 } QueueFifo;
 
 /**
- * Create a new circular FIFO queue with space reserved for 255 uint8 values.
- * Drops oldest value in queue on rollover.
+ * Create a new circular FIFO queue. Drops oldest value in queue on rollover.
  *
  * @return Queue
  */
@@ -35,21 +34,23 @@ QueueFifo queue_fifo_new(uint8_t max);
 bool queue_fifo_is_empty(QueueFifo *queue);
 
 /**
- * Push value onto the back of the queue.
+ * Push onto the queue.
+ *
+ * @return Tail
  */
 uint8_t queue_fifo_push(QueueFifo *queue);
 
 /**
- * Return the value at head without modifying the queue.
+ * Return the current head without modifying the queue.
  *
- * @return Value at head of queue
+ * @return Head
  */
 uint8_t queue_fifo_peek(QueueFifo *queue);
 
 /**
- * Return the value at head and move head to next value.
+ * Return the current head and increment.
  *
- * @return Value at head of queue
+ * @return Head
  */
 uint8_t queue_fifo_pop(QueueFifo *queue);
 
