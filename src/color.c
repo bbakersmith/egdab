@@ -48,14 +48,17 @@ void color_hue_to_rgb(Color *color) {
 // - as1115 provides 16 intensity levels, which we can use to provide more color depth
 // - get as close as possible with digits first, rounding up (8 steps)
 // - then use intensity to get as close as possible within the remaining range (16 steps)
-ColorDigit color_rgb_to_digit(uint8_t rgb_value) {
+// * need to be able to see the LEDs to judge if this actually works
+void color_rgb_to_digit(ColorDigit *digit, uint8_t rgb_value) {
   uint8_t segment_size = 31;
   uint8_t num_off_segments = 8 - (rgb_value / segment_size);
   uint8_t segments = 255 >> num_off_segments;
+  digit->segments = segments;
+}
 
-  ColorDigit digit = {
-    .segments = segments
-  };
-
-  return digit;
+void color_hue_to_digits(ColorLed *led) {
+  color_hue_to_rgb(&led->color);
+  color_rgb_to_digit(&led->red, led->color.red);
+  color_rgb_to_digit(&led->green, led->color.green);
+  color_rgb_to_digit(&led->blue, led->color.blue);
 }

@@ -13,5 +13,13 @@ typedef struct ColorDigit {
   uint8_t segments;
 } ColorDigit;
 
+typedef struct ColorLed {
+  Color color;
+  ColorDigit red;
+  ColorDigit green;
+  ColorDigit blue;
+} ColorLed;
+
 void color_hue_to_rgb(Color *color);
-ColorDigit color_rgb_to_digit(uint8_t rgb_value);
+void color_rgb_to_digit(ColorDigit *digit, uint8_t rgb_value);
+void color_hue_to_digits(ColorLed *led);

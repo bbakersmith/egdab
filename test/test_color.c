@@ -59,15 +59,26 @@ TEST(color_tests, test_color_rgb_to_digit) {
 
   char msg[50];
   for(uint8_t i = 0; i < 5; i++) {
-    ColorDigit result = color_rgb_to_digit(cases[i].rgb_value);
+    ColorDigit result;
+    color_rgb_to_digit(&result, cases[i].rgb_value);
     sprintf(msg, "Failed iteration %i", i);
     /* TEST_ASSERT_EQUAL_MESSAGE(cases[i].intensity, result.intensity, msg); */
     TEST_ASSERT_EQUAL_MESSAGE(cases[i].segments, result.segments, msg);
   }
 }
 
+TEST(color_tests, test_color_rgb_to_digits) {
+  ColorLed dummy_led = {{160}};
+
+  color_hue_to_digits(&dummy_led);
+
+  TEST_ASSERT_EQUAL(0, dummy_led.red.segments);
+  TEST_ASSERT_EQUAL(3, dummy_led.green.segments);
+  TEST_ASSERT_EQUAL(255, dummy_led.blue.segments);
+}
 
 TEST_GROUP_RUNNER(color_tests) {
   RUN_TEST_CASE(color_tests, test_color_hue_to_rgb);
   RUN_TEST_CASE(color_tests, test_color_rgb_to_digit);
+  RUN_TEST_CASE(color_tests, test_color_rgb_to_digits);
 }
