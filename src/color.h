@@ -8,4 +8,10 @@ typedef struct Color {
   uint8_t blue;
 } Color;
 
-Color color_hue_to_rgb(Color color);
+typedef struct ColorDigit {
+  uint8_t intensity;
+  uint8_t segments;
+} ColorDigit;
+
+void color_hue_to_rgb(Color *color);
+ColorDigit color_rgb_to_digit(uint8_t rgb_value);

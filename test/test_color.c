@@ -30,18 +30,44 @@ TEST(color_tests, test_color_hue_to_rgb) {
 
   char msg[50];
   for(uint8_t i = 0; i < 9; i++) {
-    Color input = {
+    Color dummy_color = {
       .hue = cases[i].hue
     };
-    Color result = color_hue_to_rgb(input);
+    color_hue_to_rgb(&dummy_color);
 
     sprintf(msg, "Failed iteration %i", i);
-    TEST_ASSERT_EQUAL_MESSAGE(cases[i].red, result.red, msg);
-    TEST_ASSERT_EQUAL_MESSAGE(cases[i].green, result.green, msg);
-    TEST_ASSERT_EQUAL_MESSAGE(cases[i].blue, result.blue, msg);
+    TEST_ASSERT_EQUAL_MESSAGE(cases[i].red, dummy_color.red, msg);
+    TEST_ASSERT_EQUAL_MESSAGE(cases[i].green, dummy_color.green, msg);
+    TEST_ASSERT_EQUAL_MESSAGE(cases[i].blue, dummy_color.blue, msg);
   }
 }
 
+TEST(color_tests, test_color_rgb_to_digit) {
+  typedef struct Case {
+    uint8_t rgb_value;
+    uint8_t intensity;
+    uint8_t segments;
+  } Case;
+
+  Case cases[10] = {
+    {255, 255, 255},
+    {192, 255, 63},
+    {128, 255, 15},
+    {64, 255, 3},
+    {0, 255, 0}
+  };
+
+  char msg[50];
+  for(uint8_t i = 0; i < 5; i++) {
+    ColorDigit result = color_rgb_to_digit(cases[i].rgb_value);
+    sprintf(msg, "Failed iteration %i", i);
+    /* TEST_ASSERT_EQUAL_MESSAGE(cases[i].intensity, result.intensity, msg); */
+    TEST_ASSERT_EQUAL_MESSAGE(cases[i].segments, result.segments, msg);
+  }
+}
+
+
 TEST_GROUP_RUNNER(color_tests) {
   RUN_TEST_CASE(color_tests, test_color_hue_to_rgb);
+  RUN_TEST_CASE(color_tests, test_color_rgb_to_digit);
 }
