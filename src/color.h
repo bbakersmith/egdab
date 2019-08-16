@@ -1,3 +1,6 @@
+#ifndef _COLOR_H_
+#define _COLOR_H_
+
 #include <stdint.h>
 
 typedef struct Color {
@@ -23,3 +26,5 @@ typedef struct ColorLed {
 void color_hue_to_rgb(Color *color);
 void color_rgb_to_digit(ColorDigit *digit, uint8_t rgb_value);
 void color_hue_to_digits(ColorLed *led);
+
+#endif

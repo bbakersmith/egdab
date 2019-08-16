@@ -8,9 +8,11 @@ TEST_SRC = \
 	Unity/src/unity.c \
 	Unity/extras/fixture/src/unity_fixture.c \
 	src/color.c \
+	src/controller.c \
 	src/queue.c \
 	src/twi.c \
 	test/test_color.c \
+	test/test_controller.c \
 	test/test_queue.c \
 	test/test_twi.c \
 	test/run_tests.c
