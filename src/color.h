@@ -16,6 +16,7 @@ typedef struct ColorDigit {
   uint8_t segments;
 } ColorDigit;
 
+// TODO rename red, green, blue > red_digit, green_digit, blue_digit
 typedef struct ColorLed {
   Color color;
   ColorDigit red;
