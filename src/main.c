@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-// #define F_CPU 20000000
+#define F_CPU 3333333UL
 #include <util/delay.h>
 
 #define PIN2 2
@@ -54,10 +54,14 @@ uint8_t egdab_knob_position(uint8_t knob) {
 }
 
 int main(void) {
+  // TODO FIXME still running with default 1/6 prescaler (see F_CPU above)
+  // System clock configuration, disable prescaler, 1606 defaults to 20Mhz
+  CLKCTRL.MCLKCTRLB = 0;
+
 	// TWI setup
-	TWI0.MCTRLA = (1 << MCTRLA_RIEN) | (1 << MCTRLA_WIEN) | (1 << MCTRLA_ENABLE);
-	TWI0.MBAUD = 0x4B;
+	TWI0.MBAUD = 50;
 	TWI0.MSTATUS = 1;
+	TWI0.MCTRLA = (1 << MCTRLA_RIEN) | (1 << MCTRLA_WIEN) | (1 << MCTRLA_ENABLE);
 
 	// Input pin setup
 	PORTA.DIRCLR |= (1 << PIN4) | (1 << PIN5);
@@ -147,23 +151,21 @@ int main(void) {
 	egdab_twi_write(AS1115_ADDR, data, 2);
 
 	while(true) {
-		// Do test
-		data[0] = 0x0F;
-		data[1] = 0x01;
-//		egdab_twi_write(AS1115_ADDR, data, 2);
+		/* // Do test */
+		/* data[0] = 0x0F; */
+		/* data[1] = 0x01; */
+		/* egdab_twi_write(AS1115_ADDR, data, 2); */
 
-		// PORTB.OUTCLR = (1 << PIN2);
-		PORTB.OUTTGL = (1 << PIN3);
+		PORTB.OUTTGL = (1 << PIN2);
 		_delay_ms(1000);
-		// PORTB.OUTSET = (1 << PIN2);
 		PORTB.OUTTGL = (1 << PIN3);
 		_delay_ms(1000);
 
-		if(egdab_knob_position(4) < 127) {
-			PORTB.OUTCLR = (1 << PIN2);
-		} else {
-			PORTB.OUTSET = (1 << PIN2);
-		}
+		/* if(egdab_knob_position(4) < 127) { */
+		/* 	PORTB.OUTCLR = (1 << PIN2); */
+		/* } else { */
+		/* 	PORTB.OUTSET = (1 << PIN2); */
+		/* } */
 
 //		if(egdab_knob_position(5) < 127) {
 //			PORTB.OUTCLR = (1 << PIN3);
