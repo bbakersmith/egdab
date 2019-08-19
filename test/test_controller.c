@@ -80,18 +80,18 @@ TEST(controller_tests, test_controller_rgb_to_digits) {
 // TODO need way more of these tests
 TEST(controller_tests, test_controller_update_ui_output) {
   ControllerUiInput dummy_input;
-  ControllerUiOutput dummy_output;
+  ControllerLed dummy_led;
 
   dummy_input.analog_inputs[CONTROLLER_INPUT_HUE_MIN] = 0;
   dummy_input.analog_inputs[CONTROLLER_INPUT_HUE_MAX] = 255;
   dummy_input.analog_inputs[CONTROLLER_INPUT_TEMPERATURE] = 32;
-  dummy_output.led1_hue_inputs = (1 << CONTROLLER_INPUT_TEMPERATURE);
+  dummy_led.hue_inputs = (1 << CONTROLLER_INPUT_TEMPERATURE);
 
-  controller_update_ui_output(&dummy_input, &dummy_output);
+  controller_update_led_output(&dummy_input, &dummy_led);
 
-  TEST_ASSERT_EQUAL(255, dummy_output.led1.red.segments);
-  TEST_ASSERT_EQUAL(31, dummy_output.led1.green.segments);
-  TEST_ASSERT_EQUAL(0, dummy_output.led1.blue.segments);
+  TEST_ASSERT_EQUAL(255, dummy_led.red.segments);
+  TEST_ASSERT_EQUAL(31, dummy_led.green.segments);
+  TEST_ASSERT_EQUAL(0, dummy_led.blue.segments);
 }
 
 TEST_GROUP_RUNNER(controller_tests) {
