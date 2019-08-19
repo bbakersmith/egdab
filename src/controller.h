@@ -39,19 +39,40 @@ typedef struct ControllerUiInput {
   uint8_t analog_inputs[7];
 } ControllerUiInput;
 
+typedef struct ControllerDigit {
+  uint8_t intensity;
+  uint8_t segments;
+} ControllerDigit;
+
+// TODO
+// - rename red, green, blue > red_digit, green_digit, blue_digit
+// - move to controller
+// - add hue and value inputs
+typedef struct ControllerLed {
+  Color color;
+  ControllerDigit red;
+  ControllerDigit green;
+  ControllerDigit blue;
+} ControllerLed;
+
 typedef struct ControllerUiOutput {
-  ColorLed led1;
+  ControllerLed led1;
   uint8_t led1_hue_inputs;
   uint8_t led1_value_inputs;
-  ColorLed led2;
+  ControllerLed led2;
   uint8_t led2_hue_inputs;
   uint8_t led2_value_inputs;
 } ControllerUiOutput;
 
 uint8_t controller_apply_range(uint8_t min, uint8_t max, uint8_t value);
+void controller_rgb_to_digit(ControllerDigit *digit, uint8_t rgb_value);
+void controller_hue_to_digits(ControllerLed *led);
 void controller_update_ui_output(
   ControllerUiInput *input,
   ControllerUiOutput *output
 );
+
+// TODO
+// - map sensors to leds
 
 #endif

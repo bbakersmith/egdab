@@ -14,6 +14,25 @@ uint8_t controller_apply_range(uint8_t min, uint8_t max, uint8_t value) {
   }
 }
 
+// TODO strategy for incorporating digit intensity
+// - as1115 provides 16 intensity levels, which we can use to provide more color depth
+// - get as close as possible with digits first, rounding up (8 steps)
+// - then use intensity to get as close as possible within the remaining range (16 steps)
+// * need to be able to see the LEDs to judge if this actually works
+void controller_rgb_to_digit(ControllerDigit *digit, uint8_t rgb_value) {
+  uint8_t segment_size = 31;
+  uint8_t num_off_segments = 8 - (rgb_value / segment_size);
+  uint8_t segments = 255 >> num_off_segments;
+  digit->segments = segments;
+}
+
+void controller_hue_to_digits(ControllerLed *led) {
+  color_hue_to_rgb(&led->color);
+  controller_rgb_to_digit(&led->red, led->color.red);
+  controller_rgb_to_digit(&led->green, led->color.green);
+  controller_rgb_to_digit(&led->blue, led->color.blue);
+}
+
 // TODO this should really be to update a single LED (or group)
 // this would require that an LED struct exists with the hue and value input mapping flags
 void controller_update_ui_output(
@@ -57,6 +76,13 @@ void controller_update_ui_output(
   (output->led2).color.hue = controller_apply_range(hue_min, hue_max, led2_hue);
   (output->led2).color.value = controller_apply_range(value_min, value_max, led2_value);
 
-  color_hue_to_digits(&output->led1);
-  color_hue_to_digits(&output->led2);
+  controller_hue_to_digits(&output->led1);
+  controller_hue_to_digits(&output->led2);
 }
+
+
+// TODO
+// - maintain state of sensors
+// - maintain state of ui
+// - use state of sensors and ui to update leds and digits
+// - provide trigger inputs for temporary override of sensors (?)
