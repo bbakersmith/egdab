@@ -1,5 +1,8 @@
 #include "controller.h"
 
+// TODO remove
+#include <stdio.h>
+
 uint8_t controller_apply_range(uint8_t min, uint8_t max, uint8_t value) {
   if(min < max) {
     uint16_t length = max - min;

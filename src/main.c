@@ -12,6 +12,8 @@
 #define F_CPU 3333333UL
 #include <util/delay.h>
 
+#include "twi.h"
+
 #define PIN2 2
 #define PIN3 3
 #define PIN4 4
@@ -25,6 +27,24 @@
 
 #define AS1115_ADDR 0
 #define CAP1296_ADDR 0x50
+
+Twi twi;
+
+void twi_addr_fn(uint8_t addr) {
+  // TODO write address byte
+}
+
+void twi_write_data_fn(uint8_t data) {
+  // TODO write data byte
+  /* dummy_twi_write_data = data; */
+  /* dummy_twi_write_data_count++; */
+}
+
+void twi_stop_fn(void) {
+  // TODO stop
+  /* dummy_twi_stop_count++; */
+}
+
 
 void egdab_twi_write(uint8_t address, uint8_t data[], uint8_t len) {
 // TODO
@@ -63,6 +83,12 @@ int main(void) {
 	TWI0.MSTATUS = 1;
 	TWI0.MCTRLA = (1 << MCTRLA_RIEN) | (1 << MCTRLA_WIEN) | (1 << MCTRLA_ENABLE);
 
+  twi = twi_new(
+    &twi_addr_fn,
+    &twi_write_data_fn,
+    &twi_stop_fn
+  );
+
 	// Input pin setup
 	PORTA.DIRCLR |= (1 << PIN4) | (1 << PIN5);
 	PORTA.PIN4CTRL = 4; // disable input buffer
@@ -92,11 +118,11 @@ int main(void) {
 	data[1] = 0x01;
 	egdab_twi_write(AS1115_ADDR, data, 2);
 
-	// global intensity
-	_delay_ms(2);
-	data[0] = 0x0A;
-	data[1] = 0x0F;
-	egdab_twi_write(AS1115_ADDR, data, 2);
+	/* // global intensity */
+	/* _delay_ms(2); */
+	/* data[0] = 0x0A; */
+	/* data[1] = 0x0F; */
+	/* egdab_twi_write(AS1115_ADDR, data, 2); */
 
 	// decode mode
 	_delay_ms(2);
@@ -104,60 +130,91 @@ int main(void) {
 	data[1] = 0x00;
 	egdab_twi_write(AS1115_ADDR, data, 2);
 
-	// set led intensity and value
+	// scan limit
 	_delay_ms(2);
-	data[0] = 0x10;
+	data[0] = 0x0B;
 	data[1] = 0xFF;
 	egdab_twi_write(AS1115_ADDR, data, 2);
 
-	_delay_ms(2);
-	data[0] = 0x01;
-	data[1] = 0xFF;
-	egdab_twi_write(AS1115_ADDR, data, 2);
+	/* // set led intensity and value */
+	/* _delay_ms(2); */
+	/* data[0] = 0x10; */
+	/* data[1] = 0xFF; */
+	/* egdab_twi_write(AS1115_ADDR, data, 2); */
+  /*  */
+	/* _delay_ms(2); */
+	/* data[0] = 0x01; */
+	/* data[1] = 0xFF; */
+	/* egdab_twi_write(AS1115_ADDR, data, 2); */
+  /*  */
+	/* _delay_ms(2); */
+	/* data[0] = 0x02; */
+	/* data[1] = 0xFF; */
+	/* egdab_twi_write(AS1115_ADDR, data, 2); */
 
-	_delay_ms(2);
-	data[0] = 0x02;
-	data[1] = 0xFF;
-	egdab_twi_write(AS1115_ADDR, data, 2);
+	/* // set 7-seg chars intensity */
+	/* _delay_ms(2); */
+	/* data[0] = 0x11; */
+	/* data[1] = 0xFF; */
+	/* egdab_twi_write(AS1115_ADDR, data, 2); */
+  /*  */
+	/* _delay_ms(2); */
+	/* data[0] = 0x12; */
+	/* data[1] = 0xFF; */
+	/* egdab_twi_write(AS1115_ADDR, data, 2); */
+  /*  */
+	/* // set 7-seg chars value */
+	/* _delay_ms(2); */
+	/* data[0] = 0x04; */
+	/* data[1] = 0xFF; */
+	/* egdab_twi_write(AS1115_ADDR, data, 2); */
+  /*  */
+	/* _delay_ms(2); */
+	/* data[0] = 0x05; */
+	/* data[1] = 0xFF; */
+	/* egdab_twi_write(AS1115_ADDR, data, 2); */
 
-	// set 7-seg chars intensity
-	_delay_ms(2);
-	data[0] = 0x11;
-	data[1] = 0xFF;
-	egdab_twi_write(AS1115_ADDR, data, 2);
+	/* // display test */
+	/* _delay_ms(2); */
+	/* data[0] = 0x0F; */
+	/* data[1] = 0x01; */
+	/* egdab_twi_write(AS1115_ADDR, data, 2); */
 
-	_delay_ms(2);
-	data[0] = 0x12;
-	data[1] = 0xFF;
-	egdab_twi_write(AS1115_ADDR, data, 2);
-
-	// set 7-seg chars value
-	_delay_ms(2);
-	data[0] = 0x04;
-	data[1] = 0xFF;
-	egdab_twi_write(AS1115_ADDR, data, 2);
-
-	_delay_ms(2);
-	data[0] = 0x05;
-	data[1] = 0xFF;
-	egdab_twi_write(AS1115_ADDR, data, 2);
-
-	_delay_ms(5000);
-
-	// display test
-	_delay_ms(2);
-	data[0] = 0x0F;
-	data[1] = 0x01;
-	egdab_twi_write(AS1115_ADDR, data, 2);
+  // try to clear all segments...
+  for(uint8_t i = 1; i < 9; i++) {
+		data[0] = i;
+		data[1] = 0x00;
+		egdab_twi_write(AS1115_ADDR, data, 2);
+  }
 
 	while(true) {
-		/* // Do test */
-		/* data[0] = 0x0F; */
-		/* data[1] = 0x01; */
+    /* data[0] = 0x0C; */
+    /* data[1] = 0x00; */
+    /* egdab_twi_write(AS1115_ADDR, data, 2); */
+
+		data[0] = 0x02;
+		data[1] = 0xFF;
+		egdab_twi_write(AS1115_ADDR, data, 2);
+
+		/* data[0] = 0x02; */
+		/* data[1] = 0x00; */
 		/* egdab_twi_write(AS1115_ADDR, data, 2); */
 
 		PORTB.OUTTGL = (1 << PIN2);
 		_delay_ms(1000);
+
+    /* data[0] = 0x0C; */
+    /* data[1] = 0x01; */
+    /* egdab_twi_write(AS1115_ADDR, data, 2); */
+
+		data[0] = 0x02;
+		data[1] = 0x00;
+		egdab_twi_write(AS1115_ADDR, data, 2);
+
+		/* data[0] = 0x02; */
+		/* data[1] = 0xFF; */
+		/* egdab_twi_write(AS1115_ADDR, data, 2); */
+
 		PORTB.OUTTGL = (1 << PIN3);
 		_delay_ms(1000);
 

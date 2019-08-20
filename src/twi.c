@@ -30,6 +30,9 @@ void twi_write(Twi *twi, uint8_t addr, uint8_t data[TWI_MAX_DATA_COUNT], uint8_t
   }
 }
 
+// TODO
+// - need to make sure not to lose the current item if mid data-write
+// - can do this by always popping, and storing the active item in a separate var
 void twi_handle_write_interrupt(Twi *twi) {
   if(queue_fifo_is_empty(&twi->queue)) return;
 
