@@ -12,6 +12,7 @@
 #define F_CPU 3333333UL
 #include <util/delay.h>
 
+#include "controller.h"
 #include "twi.h"
 
 #define PIN2 2
@@ -45,7 +46,6 @@ void twi_stop_fn(void) {
   /* dummy_twi_stop_count++; */
 }
 
-
 void egdab_twi_write(uint8_t address, uint8_t data[], uint8_t len) {
 // TODO
 // - load the data in buffer
@@ -71,6 +71,13 @@ uint8_t egdab_knob_position(uint8_t knob) {
 	ADC0.COMMAND = 1;
 	while(ADC0.COMMAND) {}
 	return (uint8_t) ADC0.RES;
+}
+
+void as1115_write(uint8_t reg, uint8_t data) {
+  uint8_t buffer[2];
+  buffer[0] = reg;
+  buffer[1] = data;
+  egdab_twi_write(AS1115_ADDR, buffer, 2);
 }
 
 int main(void) {
@@ -102,8 +109,6 @@ int main(void) {
 	PORTB.DIRSET |= (1 << PIN2) | (1 << PIN3);
 	PORTB.OUTCLR |= (1 << PIN2) | (1 << PIN3);
 
-	_delay_ms(500);
-
 	/* uint8_t debug_data[1] = { */
 	/* 	123 */
 	/* }; */
@@ -111,12 +116,8 @@ int main(void) {
 
 //	_delay_ms(500);
 
-	uint8_t data[2];
-
 	// shutdown mode, normal with defaults
-	data[0] = 0x0C;
-	data[1] = 0x01;
-	egdab_twi_write(AS1115_ADDR, data, 2);
+  as1115_write(0x0C, 0x01);
 
 	/* // global intensity */
 	/* _delay_ms(2); */
@@ -125,32 +126,17 @@ int main(void) {
 	/* egdab_twi_write(AS1115_ADDR, data, 2); */
 
 	// decode mode
-	_delay_ms(2);
-	data[0] = 0x09;
-	data[1] = 0x00;
-	egdab_twi_write(AS1115_ADDR, data, 2);
+  as1115_write(0x09, 0x00);
 
 	// scan limit
-	_delay_ms(2);
-	data[0] = 0x0B;
-	data[1] = 0xFF;
-	egdab_twi_write(AS1115_ADDR, data, 2);
+  as1115_write(0x0B, 0xFF);
 
-	/* // set led intensity and value */
-	/* _delay_ms(2); */
-	/* data[0] = 0x10; */
-	/* data[1] = 0xFF; */
-	/* egdab_twi_write(AS1115_ADDR, data, 2); */
-  /*  */
-	/* _delay_ms(2); */
-	/* data[0] = 0x01; */
-	/* data[1] = 0xFF; */
-	/* egdab_twi_write(AS1115_ADDR, data, 2); */
-  /*  */
-	/* _delay_ms(2); */
-	/* data[0] = 0x02; */
-	/* data[1] = 0xFF; */
-	/* egdab_twi_write(AS1115_ADDR, data, 2); */
+	// set led intensity and value
+  as1115_write(0x10, 0xFF);
+
+  as1115_write(0x01, 0xFF);
+
+  as1115_write(0x02, 0xFF);
 
 	/* // set 7-seg chars intensity */
 	/* _delay_ms(2); */
@@ -182,41 +168,49 @@ int main(void) {
 
   // try to clear all segments...
   for(uint8_t i = 1; i < 9; i++) {
-		data[0] = i;
-		data[1] = 0x00;
-		egdab_twi_write(AS1115_ADDR, data, 2);
+    as1115_write(i, 0x00);
   }
 
+  Color color;
+
+  as1115_write(0x01, 0xFF);
+  as1115_write(0x02, 0xFF);
+  as1115_write(0x03, 0xFF);
+
 	while(true) {
-    /* data[0] = 0x0C; */
-    /* data[1] = 0x00; */
-    /* egdab_twi_write(AS1115_ADDR, data, 2); */
+    for(uint8_t i = 0; i < 255; i++) {
+      color.hue = i;
+      color_hue_to_rgb(&color);
 
-		data[0] = 0x02;
-		data[1] = 0xFF;
-		egdab_twi_write(AS1115_ADDR, data, 2);
+      uint8_t blue = controller_apply_range(0, 15, color.blue);
+      uint8_t green = controller_apply_range(0, 15, color.green);
+      uint8_t red = controller_apply_range(0, 15, color.red);
 
-		/* data[0] = 0x02; */
-		/* data[1] = 0x00; */
-		/* egdab_twi_write(AS1115_ADDR, data, 2); */
+      as1115_write(0x10, (blue << 4) | green);
+      as1115_write(0x11, red);
+
+      if(blue == 0) {
+        as1115_write(0x01, 0x00);
+      } else {
+        as1115_write(0x01, 0xFF);
+      }
+
+      if(green == 0) {
+        as1115_write(0x02, 0x00);
+      } else {
+        as1115_write(0x02, 0xFF);
+      }
+
+      if(red == 0) {
+        as1115_write(0x03, 0x00);
+      } else {
+        as1115_write(0x03, 0xFF);
+      }
+
+      _delay_ms(10);
+    }
 
 		PORTB.OUTTGL = (1 << PIN2);
-		_delay_ms(1000);
-
-    /* data[0] = 0x0C; */
-    /* data[1] = 0x01; */
-    /* egdab_twi_write(AS1115_ADDR, data, 2); */
-
-		data[0] = 0x02;
-		data[1] = 0x00;
-		egdab_twi_write(AS1115_ADDR, data, 2);
-
-		/* data[0] = 0x02; */
-		/* data[1] = 0xFF; */
-		/* egdab_twi_write(AS1115_ADDR, data, 2); */
-
-		PORTB.OUTTGL = (1 << PIN3);
-		_delay_ms(1000);
 
 		/* if(egdab_knob_position(4) < 127) { */
 		/* 	PORTB.OUTCLR = (1 << PIN2); */
