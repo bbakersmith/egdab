@@ -5,6 +5,7 @@
  * Author : ben
  */
 
+#include <avr/interrupt.h>
 #include <avr/io.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -13,6 +14,7 @@
 #include <util/delay.h>
 
 #include "controller.h"
+#include "digit.h"
 #include "twi.h"
 
 #define PIN2 2
@@ -32,18 +34,17 @@
 Twi twi;
 
 void twi_addr_fn(uint8_t addr) {
-  // TODO write address byte
+  TWI0.MADDR = addr;
 }
 
 void twi_write_data_fn(uint8_t data) {
-  // TODO write data byte
-  /* dummy_twi_write_data = data; */
-  /* dummy_twi_write_data_count++; */
+  /* while(!(TWI0.MSTATUS & (1 << 6))) {} */
+  TWI0.MDATA = data;
 }
 
 void twi_stop_fn(void) {
-  // TODO stop
-  /* dummy_twi_stop_count++; */
+	/* while(!(TWI0.MSTATUS & (1 << 6))) {} */
+	TWI0.MCTRLB |= 3;
 }
 
 void egdab_twi_write(uint8_t address, uint8_t data[], uint8_t len) {
@@ -74,10 +75,12 @@ uint8_t egdab_knob_position(uint8_t knob) {
 }
 
 void as1115_write(uint8_t reg, uint8_t data) {
+  PORTB.OUTTGL = (1 << PIN2);
   uint8_t buffer[2];
   buffer[0] = reg;
   buffer[1] = data;
   egdab_twi_write(AS1115_ADDR, buffer, 2);
+  /* twi_write(&twi, AS1115_ADDR, buffer, 2); */
 }
 
 int main(void) {
@@ -109,6 +112,8 @@ int main(void) {
 	PORTB.DIRSET |= (1 << PIN2) | (1 << PIN3);
 	PORTB.OUTCLR |= (1 << PIN2) | (1 << PIN3);
 
+  sei();
+
 	/* uint8_t debug_data[1] = { */
 	/* 	123 */
 	/* }; */
@@ -133,9 +138,7 @@ int main(void) {
 
 	// set led intensity and value
   as1115_write(0x10, 0xFF);
-
   as1115_write(0x01, 0xFF);
-
   as1115_write(0x02, 0xFF);
 
 	/* // set 7-seg chars intensity */
@@ -173,45 +176,96 @@ int main(void) {
 
   Color color;
 
+  /*
   as1115_write(0x01, 0xFF);
   as1115_write(0x02, 0xFF);
+  */
+
   as1115_write(0x03, 0xFF);
 
+  // FIXME 4 and 5 are the front digits, but seem shorted
+  as1115_write(0x04, DIGIT_0);
+  _delay_ms(200);
+  as1115_write(0x04, DIGIT_1);
+  _delay_ms(200);
+  as1115_write(0x04, DIGIT_2);
+  _delay_ms(200);
+  as1115_write(0x04, DIGIT_3);
+  _delay_ms(200);
+  as1115_write(0x04, DIGIT_4);
+  _delay_ms(200);
+  as1115_write(0x04, DIGIT_5);
+  _delay_ms(200);
+  as1115_write(0x04, DIGIT_6);
+  _delay_ms(200);
+  as1115_write(0x04, DIGIT_7);
+  _delay_ms(200);
+  as1115_write(0x04, DIGIT_8);
+  _delay_ms(200);
+  as1115_write(0x04, DIGIT_9);
+  _delay_ms(200);
+
 	while(true) {
-    for(uint8_t i = 0; i < 255; i++) {
-      color.hue = i;
-      color_hue_to_rgb(&color);
 
-      uint8_t blue = controller_apply_range(0, 15, color.blue);
-      uint8_t green = controller_apply_range(0, 15, color.green);
-      uint8_t red = controller_apply_range(0, 15, color.red);
-
-      as1115_write(0x10, (blue << 4) | green);
-      as1115_write(0x11, red);
-
-      if(blue == 0) {
-        as1115_write(0x01, 0x00);
-      } else {
-        as1115_write(0x01, 0xFF);
-      }
-
-      if(green == 0) {
-        as1115_write(0x02, 0x00);
-      } else {
-        as1115_write(0x02, 0xFF);
-      }
-
-      if(red == 0) {
-        as1115_write(0x03, 0x00);
-      } else {
-        as1115_write(0x03, 0xFF);
-      }
-
-      _delay_ms(10);
+    uint8_t temp = egdab_knob_position(6);
+    if(temp < 25) {
+      as1115_write(0x04, digit_code(0));
+    } else if(temp < 110) {
+      as1115_write(0x04, digit_code(1));
+    } else if(temp < 115) {
+      as1115_write(0x04, digit_code(2));
+    } else if(temp < 120) {
+      as1115_write(0x04, digit_code(3));
+    } else if(temp < 125) {
+      as1115_write(0x04, digit_code(4));
+    } else if(temp < 130) {
+      as1115_write(0x04, digit_code(5));
+    } else if(temp < 135) {
+      as1115_write(0x04, digit_code(6));
+    } else if(temp < 140) {
+      as1115_write(0x04, digit_code(7));
+    } else if(temp < 145) {
+      as1115_write(0x04, digit_code(8));
+    } else {
+      as1115_write(0x04, digit_code(9));
     }
+    /* as1115_write(0x04, digit_code((egdab_knob_position(6) * 10) >> 8)); */
+    _delay_ms(500);
 
-		PORTB.OUTTGL = (1 << PIN2);
-
+    /* for(uint8_t i = 0; i < 255; i++) { */
+    /*   color.hue = i; */
+    /*   color_hue_to_rgb(&color); */
+    /*  */
+    /*   uint8_t blue = controller_apply_range(0, 15, color.blue); */
+    /*   uint8_t green = controller_apply_range(0, 15, color.green); */
+    /*   uint8_t red = controller_apply_range(0, 15, color.red); */
+    /*  */
+    /*   as1115_write(0x10, (blue << 4) | green); */
+    /*   as1115_write(0x11, red); */
+    /*  */
+    /*   if(blue == 0) { */
+    /*     as1115_write(0x01, 0x00); */
+    /*   } else { */
+    /*     as1115_write(0x01, 0xFF); */
+    /*   } */
+    /*  */
+    /*   if(green == 0) { */
+    /*     as1115_write(0x02, 0x00); */
+    /*   } else { */
+    /*     as1115_write(0x02, 0xFF); */
+    /*   } */
+    /*  */
+    /*   if(red == 0) { */
+    /*     as1115_write(0x03, 0x00); */
+    /*   } else { */
+    /*     as1115_write(0x03, 0xFF); */
+    /*   } */
+    /*  */
+    /*   _delay_ms(10); */
+    /* } */
+    /*  */
+		/* PORTB.OUTTGL = (1 << PIN2); */
+    /*  */
 		/* if(egdab_knob_position(4) < 127) { */
 		/* 	PORTB.OUTCLR = (1 << PIN2); */
 		/* } else { */
@@ -226,4 +280,10 @@ int main(void) {
 	}
 
 	return 0;
+}
+
+ISR(TWI0_TWIM_vect) {
+  // TODO handle read interrupt?
+  twi_handle_write_interrupt(&twi);
+  PORTB.OUTTGL = (1 << PIN3);
 }
