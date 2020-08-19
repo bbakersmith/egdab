@@ -83,6 +83,68 @@ void as1115_write(uint8_t reg, uint8_t data) {
   /* twi_write(&twi, AS1115_ADDR, buffer, 2); */
 }
 
+void write_color1(uint8_t hue) {
+  Color color;
+  color.hue = hue;
+  color_hue_to_rgb(&color);
+
+  uint8_t red = controller_apply_range(0, 15, color.red);
+  uint8_t green = controller_apply_range(0, 15, color.green);
+  uint8_t blue = controller_apply_range(0, 15, color.blue);
+
+  as1115_write(0x10, (red << 4));
+  as1115_write(0x11, (blue << 4) | green);
+
+  if(red == 0) {
+    as1115_write(0x02, 0x00);
+  } else {
+    as1115_write(0x02, 0xFF);
+  }
+
+  if(green == 0) {
+    as1115_write(0x03, 0x00);
+  } else {
+    as1115_write(0x03, 0xFF);
+  }
+
+  if(blue == 0) {
+    as1115_write(0x04, 0x00);
+  } else {
+    as1115_write(0x04, 0xFF);
+  }
+}
+
+void write_color2(uint8_t hue) {
+  Color color;
+  color.hue = hue;
+  color_hue_to_rgb(&color);
+
+  uint8_t red = controller_apply_range(0, 15, color.red);
+  uint8_t green = controller_apply_range(0, 15, color.green);
+  uint8_t blue = controller_apply_range(0, 15, color.blue);
+
+  as1115_write(0x12, (green << 4) | red);
+  as1115_write(0x13, (blue << 4));
+
+  if(red == 0) {
+    as1115_write(0x05, 0x00);
+  } else {
+    as1115_write(0x05, 0xFF);
+  }
+
+  if(green == 0) {
+    as1115_write(0x06, 0x00);
+  } else {
+    as1115_write(0x06, 0xFF);
+  }
+
+  if(blue == 0) {
+    as1115_write(0x07, 0x00);
+  } else {
+    as1115_write(0x07, 0xFF);
+  }
+}
+
 int main(void) {
   // TODO FIXME still running with default 1/6 prescaler (see F_CPU above)
   // System clock configuration, disable prescaler, 1606 defaults to 20Mhz
@@ -114,21 +176,15 @@ int main(void) {
 
   sei();
 
-	/* uint8_t debug_data[1] = { */
-	/* 	123 */
-	/* }; */
-//	egdab_twi_write(CAP1296_ADDR, debug_data, 1);
-
-//	_delay_ms(500);
-
 	// shutdown mode, normal with defaults
   as1115_write(0x0C, 0x01);
 
-	/* // global intensity */
-	/* _delay_ms(2); */
-	/* data[0] = 0x0A; */
-	/* data[1] = 0x0F; */
-	/* egdab_twi_write(AS1115_ADDR, data, 2); */
+  // global intensity
+  as1115_write(0x10, 0x00);
+  as1115_write(0x11, 0x00);
+  as1115_write(0x12, 0x00);
+  as1115_write(0x13, 0x00);
+  as1115_write(0x0A, 0x0F);
 
 	// decode mode
   as1115_write(0x09, 0x00);
@@ -136,148 +192,52 @@ int main(void) {
 	// scan limit
   as1115_write(0x0B, 0xFF);
 
-	// set led intensity and value
-  as1115_write(0x10, 0xFF);
-  as1115_write(0x01, 0xFF);
-  as1115_write(0x02, 0xFF);
-
-	/* // set 7-seg chars intensity */
-	/* _delay_ms(2); */
-	/* data[0] = 0x11; */
-	/* data[1] = 0xFF; */
-	/* egdab_twi_write(AS1115_ADDR, data, 2); */
-  /*  */
-	/* _delay_ms(2); */
-	/* data[0] = 0x12; */
-	/* data[1] = 0xFF; */
-	/* egdab_twi_write(AS1115_ADDR, data, 2); */
-  /*  */
-	/* // set 7-seg chars value */
-	/* _delay_ms(2); */
-	/* data[0] = 0x04; */
-	/* data[1] = 0xFF; */
-	/* egdab_twi_write(AS1115_ADDR, data, 2); */
-  /*  */
-	/* _delay_ms(2); */
-	/* data[0] = 0x05; */
-	/* data[1] = 0xFF; */
-	/* egdab_twi_write(AS1115_ADDR, data, 2); */
-
-	/* // display test */
-	/* _delay_ms(2); */
-	/* data[0] = 0x0F; */
-	/* data[1] = 0x01; */
-	/* egdab_twi_write(AS1115_ADDR, data, 2); */
-
-  // try to clear all segments...
   for(uint8_t i = 1; i < 9; i++) {
     as1115_write(i, 0x00);
+    /* as1115_write(i, 0xFF); */
   }
 
-  Color color;
+  // top red x02
+  // top green x03
+  // top blue x04
+  //
+  // side red x05
+  // side green x06
+  // side blue x07
 
-  /*
-  as1115_write(0x01, 0xFF);
-  as1115_write(0x02, 0xFF);
-  */
+  /* as1115_write(0x07, 0xFF); */
 
-  as1115_write(0x03, 0xFF);
+  /* write_color1(255); */
 
-  // FIXME 4 and 5 are the front digits, but seem shorted
-  as1115_write(0x04, DIGIT_0);
-  _delay_ms(200);
-  as1115_write(0x04, DIGIT_1);
-  _delay_ms(200);
-  as1115_write(0x04, DIGIT_2);
-  _delay_ms(200);
-  as1115_write(0x04, DIGIT_3);
-  _delay_ms(200);
-  as1115_write(0x04, DIGIT_4);
-  _delay_ms(200);
-  as1115_write(0x04, DIGIT_5);
-  _delay_ms(200);
-  as1115_write(0x04, DIGIT_6);
-  _delay_ms(200);
-  as1115_write(0x04, DIGIT_7);
-  _delay_ms(200);
-  as1115_write(0x04, DIGIT_8);
-  _delay_ms(200);
-  as1115_write(0x04, DIGIT_9);
-  _delay_ms(200);
+  as1115_write(0x01, DIGIT_0);
+  _delay_ms(100);
+  as1115_write(0x01, DIGIT_1);
+  _delay_ms(100);
+  as1115_write(0x01, DIGIT_2);
+  _delay_ms(100);
+  as1115_write(0x01, DIGIT_3);
+  _delay_ms(100);
+  as1115_write(0x01, DIGIT_4);
+  _delay_ms(100);
+  as1115_write(0x01, DIGIT_5);
+  _delay_ms(100);
+  as1115_write(0x01, DIGIT_6);
+  _delay_ms(100);
+  as1115_write(0x01, DIGIT_7);
+  _delay_ms(100);
+  as1115_write(0x01, DIGIT_8);
+  _delay_ms(100);
+  as1115_write(0x01, DIGIT_9);
+  _delay_ms(100);
+  as1115_write(0x01, 0);
 
 	while(true) {
-
-    uint8_t temp = egdab_knob_position(6);
-    if(temp < 25) {
-      as1115_write(0x04, digit_code(0));
-    } else if(temp < 110) {
-      as1115_write(0x04, digit_code(1));
-    } else if(temp < 115) {
-      as1115_write(0x04, digit_code(2));
-    } else if(temp < 120) {
-      as1115_write(0x04, digit_code(3));
-    } else if(temp < 125) {
-      as1115_write(0x04, digit_code(4));
-    } else if(temp < 130) {
-      as1115_write(0x04, digit_code(5));
-    } else if(temp < 135) {
-      as1115_write(0x04, digit_code(6));
-    } else if(temp < 140) {
-      as1115_write(0x04, digit_code(7));
-    } else if(temp < 145) {
-      as1115_write(0x04, digit_code(8));
-    } else {
-      as1115_write(0x04, digit_code(9));
+    for(uint16_t i = 0; i < 256; i++) {
+      write_color1(i);
+      write_color2((uint8_t) i / 2);
+      _delay_ms(50);
     }
-    /* as1115_write(0x04, digit_code((egdab_knob_position(6) * 10) >> 8)); */
-    _delay_ms(500);
-
-    /* for(uint8_t i = 0; i < 255; i++) { */
-    /*   color.hue = i; */
-    /*   color_hue_to_rgb(&color); */
-    /*  */
-    /*   uint8_t blue = controller_apply_range(0, 15, color.blue); */
-    /*   uint8_t green = controller_apply_range(0, 15, color.green); */
-    /*   uint8_t red = controller_apply_range(0, 15, color.red); */
-    /*  */
-    /*   as1115_write(0x10, (blue << 4) | green); */
-    /*   as1115_write(0x11, red); */
-    /*  */
-    /*   if(blue == 0) { */
-    /*     as1115_write(0x01, 0x00); */
-    /*   } else { */
-    /*     as1115_write(0x01, 0xFF); */
-    /*   } */
-    /*  */
-    /*   if(green == 0) { */
-    /*     as1115_write(0x02, 0x00); */
-    /*   } else { */
-    /*     as1115_write(0x02, 0xFF); */
-    /*   } */
-    /*  */
-    /*   if(red == 0) { */
-    /*     as1115_write(0x03, 0x00); */
-    /*   } else { */
-    /*     as1115_write(0x03, 0xFF); */
-    /*   } */
-    /*  */
-    /*   _delay_ms(10); */
-    /* } */
-    /*  */
-		/* PORTB.OUTTGL = (1 << PIN2); */
-    /*  */
-		/* if(egdab_knob_position(4) < 127) { */
-		/* 	PORTB.OUTCLR = (1 << PIN2); */
-		/* } else { */
-		/* 	PORTB.OUTSET = (1 << PIN2); */
-		/* } */
-
-//		if(egdab_knob_position(5) < 127) {
-//			PORTB.OUTCLR = (1 << PIN3);
-//		} else {
-//			PORTB.OUTSET = (1 << PIN3);
-//		}
-	}
+  }
 
 	return 0;
 }

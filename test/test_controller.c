@@ -16,7 +16,7 @@ TEST(controller_tests, test_controller_apply_range) {
     uint8_t expected;
   } Case;
 
-  Case cases[11] = {
+  Case cases[12] = {
     {0, 255, 0, 0},
     {0, 255, 255, 254},
     {0, 255, 35, 34},
@@ -27,11 +27,12 @@ TEST(controller_tests, test_controller_apply_range) {
     {200, 100, 128, 150},
     {255, 0, 128, 128},
     {255, 0, 64, 192},
-    {255, 0, 0, 255}
+    {255, 0, 0, 255},
+    {0, 15, 15, 0}
   };
 
   char msg[50];
-  for(uint8_t i = 0; i < 11; i++) {
+  for(uint8_t i = 0; i < 12; i++) {
     Case c = cases[i];
     sprintf(msg, "Failed iteration %i", i);
     TEST_ASSERT_EQUAL_MESSAGE(
